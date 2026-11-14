@@ -1,0 +1,5 @@
+$ bun test packages/core/open-in-apps.test.ts packages/server/open-in.test.ts packages/server/inbox-open-in.test.ts packages/inbox/openIn.menu.test.ts apps/pi-extension/open-in-launch.test.ts apps/pi-extension/server/open-in-guards.test.ts packages/server/open-in-guards.test.ts
+92 pass
+0 fail
+502 expect() calls
+Ran 92 tests across 7 files. [9.89s]

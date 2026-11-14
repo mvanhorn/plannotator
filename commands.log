@@ -1,0 +1,183 @@
+
+===== setup =====
+world=/tmp/plannotator-jetbrains-demo-v7uxME
+PLANNOTATOR_DATA_DIR=/tmp/plannotator-jetbrains-demo-v7uxME/data
+HOME=/tmp/plannotator-jetbrains-demo-v7uxME/home (scratch; not ~/.plannotator)
+stubs=/tmp/plannotator-jetbrains-demo-v7uxME/stubs (webstorm, rider only)
+file=/tmp/plannotator-jetbrains-demo-v7uxME/project/src/retry.ts
+PLANNOTATOR_BROWSER=/usr/bin/true
+webstorm and rider are stub launchers: they append argv to launches.log and exit 0.
+The review server and POST /api/open-in are the real ones.
+
+===== command =====
+$ ls -l /tmp/plannotator-jetbrains-demo-v7uxME/stubs
+total 8
+-rw-r--r-- 1 ubuntu ubuntu   0 Nov 14 20:55 launches.log
+-rwxr-xr-x 1 ubuntu ubuntu 291 Nov 14 20:55 rider
+-rwxr-xr-x 1 ubuntu ubuntu 291 Nov 14 20:55 webstorm
+
+exit 0
+
+===== command =====
+$ which webstorm
+/tmp/plannotator-jetbrains-demo-v7uxME/stubs/webstorm
+
+exit 0
+
+===== command =====
+$ which rider
+/tmp/plannotator-jetbrains-demo-v7uxME/stubs/rider
+
+exit 0
+
+===== command =====
+$ which pycharm
+
+exit 1
+
+===== command =====
+$ which idea
+
+exit 1
+
+===== command =====
+$ git init -q
+
+exit 0
+
+===== command =====
+$ git config user.email demo@example.com
+
+exit 0
+
+===== command =====
+$ git config user.name Demo
+
+exit 0
+
+===== command =====
+$ git config commit.gpgsign false
+
+exit 0
+
+===== command =====
+$ git add src/retry.ts
+
+exit 0
+
+===== command =====
+$ git commit -q -m "retry helper"
+
+exit 0
+
+===== command =====
+$ git diff -- src/retry.ts
+diff --git a/src/retry.ts b/src/retry.ts
+index f12101d..8f9b81d 100644
+--- a/src/retry.ts
++++ b/src/retry.ts
+@@ -39,7 +39,7 @@ export function retry<T>(fn: () => Promise<T>, attempts = 3): Promise<T> {
+   // line 39
+   // line 40
+   // line 41
+-  // line 42
++  return fn(); // line 42, the line WebStorm should open
+   // line 43
+   // line 44
+   // line 45
+
+exit 0
+
+===== review server ready =====
+url=http://localhost:18765
+readyFile=/tmp/plannotator-jetbrains-demo-v7uxME/ready.jsonl
+{"url":"http://localhost:18765","isRemote":false,"port":18765,"target":"/tmp/plannotator-jetbrains-demo-v7uxME/project"}
+
+===== command =====
+$ curl -sS -D - http://localhost:18765/api/open-in/apps
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=utf-8
+x-plannotator-server: 1
+Date: Sat, 14 Nov 2026 20:55:00 GMT
+Content-Length: 235
+
+{"available":true,"apps":[{"id":"reveal","label":"Files","kind":"file-manager","icon":"finder"},{"id":"webstorm","label":"WebStorm","kind":"editor","icon":"jetbrains"},{"id":"rider","label":"Rider","kind":"editor","icon":"jetbrains"}]}
+exit 0
+
+===== command =====
+$ curl -sS -D - -X POST http://localhost:18765/api/open-in -H "Content-Type: application/json" -d {"filePath":"src/retry.ts"}
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=utf-8
+x-plannotator-server: 1
+Date: Sat, 14 Nov 2026 20:55:00 GMT
+Content-Length: 36
+
+{"ok":false,"error":"Missing appId"}
+exit 0
+
+===== command =====
+$ curl -sS -D - -X POST http://localhost:18765/api/open-in -H "Content-Type: application/json" -d {"filePath":"src/retry.ts","appId":"not-an-app"}
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=utf-8
+x-plannotator-server: 1
+Date: Sat, 14 Nov 2026 20:55:00 GMT
+Content-Length: 34
+
+{"ok":false,"error":"Unknown app"}
+exit 0
+
+===== command =====
+$ curl -sS -D - -X POST http://localhost:18765/api/open-in -H "Content-Type: application/json" -d {"filePath":"src/retry.ts","appId":"pycharm","line":42}
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=utf-8
+x-plannotator-server: 1
+Date: Sat, 14 Nov 2026 20:55:00 GMT
+Content-Length: 40
+
+{"ok":false,"error":"PyCharm not found"}
+exit 0
+
+===== Playwright: Open in menu =====
+menu items (innerText):
+Files
+WebStorm
+Rider
+Copy path
+Copy file diff
+
+POST /api/open-in (line 42 added; review header has no selection):
+[
+  {
+    "request": {
+      "original": {
+        "filePath": "src/retry.ts",
+        "base": null,
+        "appId": "webstorm",
+        "serverSession": "0e0faf8eb42fb76bc058be9c53b165b5"
+      },
+      "posted": {
+        "filePath": "src/retry.ts",
+        "base": null,
+        "appId": "webstorm",
+        "serverSession": "0e0faf8eb42fb76bc058be9c53b165b5",
+        "line": 42
+      }
+    },
+    "status": 200,
+    "response": {
+      "ok": true
+    }
+  }
+]
+
+===== stub launches.log after choosing WebStorm =====
+webstorm --line 42 /tmp/plannotator-jetbrains-demo-v7uxME/project/src/retry.ts
+
+===== /api/exit =====
+status=200
+
+===== review server log (tail) =====
+
+  Plannotator session ready: http://localhost:18765
+
+Review session closed without feedback.

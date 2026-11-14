@@ -1,0 +1,23 @@
+[
+  {
+    "request": {
+      "original": {
+        "filePath": "src/retry.ts",
+        "base": null,
+        "appId": "webstorm",
+        "serverSession": "0e0faf8eb42fb76bc058be9c53b165b5"
+      },
+      "posted": {
+        "filePath": "src/retry.ts",
+        "base": null,
+        "appId": "webstorm",
+        "serverSession": "0e0faf8eb42fb76bc058be9c53b165b5",
+        "line": 42
+      }
+    },
+    "status": 200,
+    "response": {
+      "ok": true
+    }
+  }
+]

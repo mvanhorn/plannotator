@@ -1,0 +1,2 @@
+$ bun run --cwd apps/review build && bun run build:hook && bun run build:opencode
+exit 0
