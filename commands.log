@@ -1,0 +1,230 @@
+# Plannotator: optional source line numbers — captured commands
+# bun 1.4.4
+# cwd: /workspace  branch: feat/doc-source-line-numbers
+
+$ bun --version
+1.4.4
+EXIT:0
+
+$ git checkout -b feat/doc-source-line-numbers upstream/main
+Switched to a new branch 'feat/doc-source-line-numbers'
+EXIT:0
+
+$ bun run typecheck
+----- logs/typecheck.txt (tail) -----
+$ bash apps/pi-extension/vendor.sh && tsc --noEmit -p packages/core/tsconfig.json && tsc --noEmit -p packages/references/tsconfig.json && tsc --noEmit -p packages/references/tsconfig.test.json && tsc --noEmit -p packages/system/tsconfig.json && tsc --noEmit -p packages/acp-client/tsconfig.json && tsc --noEmit -p packages/shared/tsconfig.json && tsc --noEmit -p packages/ai/tsconfig.json && tsc --noEmit -p packages/server/tsconfig.json && tsc --noEmit -p packages/ui/tsconfig.json && tsc --noEmit -p packages/guide-viewer/tsconfig.json && tsc --noEmit -p apps/guides-show/tsconfig.json && tsc --noEmit -p apps/relay/tsconfig.json && tsc --noEmit -p apps/feedback-service/tsconfig.json && tsc --noEmit -p apps/telemetry/tsconfig.json && tsc --noEmit -p packages/ui/tsconfig.strict-consumer.json && tsc --noEmit -p apps/pi-extension/tsconfig.json && tsc --noEmit -p apps/hook/hooks/mod/tsconfig.json && tsc --noEmit -p apps/hook/tsconfig.server.json && tsc --noEmit -p packages/inbox/tsconfig.json && tsc --noEmit -p apps/inbox/tsconfig.json && tsc --noEmit -p packages/t3-code/tsconfig.json && tsc --noEmit -p apps/dsh-plugin/tsconfig.json && tsc --noEmit -p apps/cline-plugin/tsconfig.json && tsc --noEmit -p apps/openclaw-plugin/tsconfig.json
+EXIT:0
+
+$ bun run test:sandbox packages/ui/**/*.test.ts packages/ui/**/*.test.tsx
+(test:sandbox splits DOM vs non-DOM; PLANNOTATOR_DATA_DIR scratch; NO_BROWSER from tests/helpers/no-browser.ts)
+----- summaries -----
+  2069 pass
+  2 skip
+  0 fail
+Ran 2071 tests across 146 files. [27.49s]
+  2464 pass
+  1 skip
+  0 fail
+Ran 2465 tests across 260 files. [185.45s]
+  7 pass
+  0 fail
+Ran 7 tests across 1 file. [425.00ms]
+EXIT:0
+
+New tests in that run:
+  packages/ui/config/documentSourceLineNumbersSetting.test.ts: 2 pass
+  packages/ui/utils/formatBlockSourceLineLabel.test.ts: 6 pass
+  packages/ui/components/Settings.documentSourceLineNumbers.test.tsx: 2 pass
+  packages/ui/components/Viewer.sourceLineNumbers.test.tsx: 3 pass
+
+$ bun run --cwd apps/review build && bun run build:hook && bun run build:opencode
+REVIEW_EXIT:0
+HOOK_EXIT:0
+OPENCODE_EXIT:0
+EXIT:0
+(full log: logs/build.txt)
+
+$ bun /tmp/plannotator-demo/run-demo.mjs
+----- logs/demo-run.txt -----
+Resolved: /tmp/plannotator-annotate-demo-x2Oynz/catalog.md
+
+  Plannotator session ready: http://localhost:45251
+
+annotate url http://localhost:45251
+screenshot /tmp/plannotator-demo/out/screenshots/01-setting-off.png
+screenshot /tmp/plannotator-demo/out/screenshots/02-settings-open.png
+screenshot /tmp/plannotator-demo/out/screenshots/03-display-tab.png
+screenshot /tmp/plannotator-demo/out/screenshots/04-setting-on-in-settings.png
+visible gutter labels 6
+screenshot /tmp/plannotator-demo/out/screenshots/05-labels-visible.png
+screenshot /tmp/plannotator-demo/out/screenshots/06-selection-toolbar.png
+screenshot /tmp/plannotator-demo/out/screenshots/07-comment-composer.png
+screenshot /tmp/plannotator-demo/out/screenshots/08-annotation-anchored.png
+playwright video /tmp/plannotator-demo/out/video/page@7fa2be01643e4685244a9ebacaf5f235.webm
+demo run complete
+EXIT:0
+
+$ bash /tmp/plannotator-demo/render-media.sh
+ffmpeg concat of screenshots/ → out.mp4 (24s 1920x1080 30fps 720 frames H.264 yuv420p)
+ffmpeg palettegen/paletteuse → preview.gif (720x405 12fps 24s)
+EXIT:0
+
+$ ffprobe -hide_banner -show_format -show_streams out.mp4
+----- logs/ffprobe.txt (mp4) -----
+[STREAM]
+index=0
+codec_name=h264
+codec_long_name=H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10
+profile=High
+codec_type=video
+codec_tag_string=avc1
+codec_tag=0x31637661
+width=1920
+height=1080
+coded_width=1920
+coded_height=1080
+closed_captions=0
+film_grain=0
+has_b_frames=2
+sample_aspect_ratio=N/A
+display_aspect_ratio=N/A
+pix_fmt=yuv420p
+level=40
+color_range=unknown
+color_space=unknown
+color_transfer=unknown
+color_primaries=unknown
+chroma_location=left
+field_order=progressive
+refs=1
+is_avc=true
+nal_length_size=4
+id=0x1
+r_frame_rate=30/1
+avg_frame_rate=30/1
+time_base=1/15360
+start_pts=0
+start_time=0.000000
+duration_ts=368640
+duration=24.000000
+bit_rate=83165
+max_bit_rate=N/A
+bits_per_raw_sample=8
+nb_frames=720
+nb_read_frames=N/A
+nb_read_packets=N/A
+extradata_size=47
+DISPOSITION:default=1
+DISPOSITION:dub=0
+DISPOSITION:original=0
+DISPOSITION:comment=0
+DISPOSITION:lyrics=0
+DISPOSITION:karaoke=0
+DISPOSITION:forced=0
+DISPOSITION:hearing_impaired=0
+DISPOSITION:visual_impaired=0
+DISPOSITION:clean_effects=0
+DISPOSITION:attached_pic=0
+DISPOSITION:timed_thumbnails=0
+DISPOSITION:non_diegetic=0
+DISPOSITION:captions=0
+DISPOSITION:descriptions=0
+DISPOSITION:metadata=0
+DISPOSITION:dependent=0
+DISPOSITION:still_image=0
+TAG:language=und
+TAG:handler_name=VideoHandler
+TAG:vendor_id=[0][0][0][0]
+TAG:encoder=Lavc60.31.102 libx264
+[/STREAM]
+[FORMAT]
+filename=/tmp/plannotator-demo/media/out.mp4
+nb_streams=1
+nb_programs=0
+format_name=mov,mp4,m4a,3gp,3g2,mj2
+format_long_name=QuickTime / MOV
+start_time=0.000000
+duration=24.000000
+size=258995
+bit_rate=86331
+probe_score=100
+TAG:major_brand=isom
+TAG:minor_version=512
+TAG:compatible_brands=isomiso2avc1mp41
+
+$ ffprobe -hide_banner -show_format -show_streams preview.gif
+[STREAM]
+index=0
+codec_name=gif
+codec_long_name=CompuServe GIF (Graphics Interchange Format)
+profile=unknown
+codec_type=video
+codec_tag_string=[0][0][0][0]
+codec_tag=0x0000
+width=720
+height=405
+coded_width=720
+coded_height=405
+closed_captions=0
+film_grain=0
+has_b_frames=0
+sample_aspect_ratio=N/A
+display_aspect_ratio=N/A
+pix_fmt=bgra
+level=-99
+color_range=unknown
+color_space=unknown
+color_transfer=unknown
+color_primaries=unknown
+chroma_location=unspecified
+field_order=unknown
+refs=1
+id=N/A
+r_frame_rate=12/1
+avg_frame_rate=25/2
+time_base=1/100
+start_pts=0
+start_time=0.000000
+duration_ts=2400
+duration=24.000000
+bit_rate=N/A
+max_bit_rate=N/A
+bits_per_raw_sample=N/A
+nb_frames=288
+nb_read_frames=N/A
+nb_read_packets=N/A
+DISPOSITION:default=0
+DISPOSITION:dub=0
+DISPOSITION:original=0
+DISPOSITION:comment=0
+DISPOSITION:lyrics=0
+DISPOSITION:karaoke=0
+DISPOSITION:forced=0
+DISPOSITION:hearing_impaired=0
+DISPOSITION:visual_impaired=0
+DISPOSITION:clean_effects=0
+DISPOSITION:attached_pic=0
+DISPOSITION:timed_thumbnails=0
+DISPOSITION:non_diegetic=0
+DISPOSITION:captions=0
+DISPOSITION:descriptions=0
+DISPOSITION:metadata=0
+DISPOSITION:dependent=0
+DISPOSITION:still_image=0
+[/STREAM]
+[FORMAT]
+filename=/tmp/plannotator-demo/media/preview.gif
+nb_streams=1
+nb_programs=0
+format_name=gif
+format_long_name=CompuServe Graphics Interchange Format (GIF)
+start_time=0.000000
+duration=24.000000
+size=205945
+bit_rate=68648
+probe_score=100
+[/FORMAT]
+
+$ ls -l out.mp4 preview.gif
+-rw-r--r-- 1 ubuntu ubuntu 258995 Nov 14 20:59 /tmp/plannotator-demo/media/out.mp4
+-rw-r--r-- 1 ubuntu ubuntu 205945 Nov 14 20:59 /tmp/plannotator-demo/media/preview.gif

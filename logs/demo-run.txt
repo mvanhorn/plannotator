@@ -1,0 +1,17 @@
+Resolved: /tmp/plannotator-annotate-demo-x2Oynz/catalog.md
+
+  Plannotator session ready: http://localhost:45251
+
+annotate url http://localhost:45251
+screenshot /tmp/plannotator-demo/out/screenshots/01-setting-off.png
+screenshot /tmp/plannotator-demo/out/screenshots/02-settings-open.png
+screenshot /tmp/plannotator-demo/out/screenshots/03-display-tab.png
+screenshot /tmp/plannotator-demo/out/screenshots/04-setting-on-in-settings.png
+visible gutter labels 6
+screenshot /tmp/plannotator-demo/out/screenshots/05-labels-visible.png
+screenshot /tmp/plannotator-demo/out/screenshots/06-selection-toolbar.png
+screenshot /tmp/plannotator-demo/out/screenshots/07-comment-composer.png
+screenshot /tmp/plannotator-demo/out/screenshots/08-annotation-anchored.png
+playwright video /tmp/plannotator-demo/out/video/page@7fa2be01643e4685244a9ebacaf5f235.webm
+demo run complete
+EXIT:0
